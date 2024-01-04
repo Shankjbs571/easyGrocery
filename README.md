@@ -2,7 +2,7 @@
 
 Introduction
 A Flask Web App  that allows users to manage their grocery shopping cart and keep track of their purchases. It provides a user-friendly interface to add, edit, and remove items from the grocery cart.
-![ss](grocery_app/static/images/Screenshot (35).png)
+![ss](https://github.com/Shankjbs571/easyGrocery/blob/main/grocery_app/static/images/Screenshot%20(35).png?raw=true)
 
 
 

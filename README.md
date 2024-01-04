@@ -1,4 +1,4 @@
-##EasyGrocery
+EasyGrocery
 
 Introduction
 The Grocery Flask Web App is a web application (EasyGrocery) that allows users to manage their grocery shopping cart and keep track of their purchases. It provides a user-friendly interface to add, edit, and remove items from the grocery cart.

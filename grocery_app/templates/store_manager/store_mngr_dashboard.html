@@ -1,0 +1,474 @@
+{% extends "home.html" %}
+
+{% block title %}Dashboard-EasyGrocery{% endblock %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+  .bi {
+    width: 3em;
+    height: 3em;
+    vertical-align: -0.125em;
+    fill: currentcolor;
+}
+</style>
+</head>
+
+{% block header %}
+<div style="position: fixed; width: 100%; z-index: 1;">
+  <header class="p-0">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <!--src="https://drive.google.com/uc?export=view&id=1mpgyQLd4R9Zwgi5HV-KIEc6kUVFXvQXw"-->
+        <a href="/" style="text-decoration: none;"><img class="mb-2" src="https://cdn3d.iconscout.com/3d/premium/thumb/grocery-bag-4065245-3361784.png" alt="" width="68" height="65" style="margin-top: 8px;padding-bottom: 10px;">
+          <span class="fs-4" style="color:rgb(112, 0, 131);padding-bottom:0px;"><b>EasyGrocery</b> |<span> </span></span></a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          
+          <li><a href="#" data-bs-toggle="modal" data-bs-target="#sold_items" class="nav-link px-2 text-black">Sold Items</a></li>
+          
+        </ul>
+        
+        {% if manager %}
+            
+       
+            <div class="text-end">
+              <b>Welcome</b> {{ manager.store_name }}
+              <button type="button" data-bs-toggle="modal" data-bs-target="#profile_details" class="btn btn-outline-success" style="margin-left: 20px; padding-bottom: 0px;"><span class="material-symbols-outlined">
+                account_circle
+                </span></button>
+                <a href="/logout"><button type="button" class="btn btn-outline-light me-2"
+                    style="color: black; background-color: #ffd555;">Log out</button></a> 
+            </div>
+            
+        {% endif %}
+      </div>
+    </div>
+  </header>
+</div>
+{% endblock %}
+
+{% if request.args.get('message') %}
+      <div class="toast align-items-center text-bg-primary border-0 position-fixed show" style="margin-right: 0%;margin-bottom: 20px; background-color: #010c15;" role="alert" id="myToast" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" style="z-index: 5;">
+            {{ request.args.get('message') }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <script>
+        // Get the toast element
+        var toast = document.getElementById('myToast');
+      
+        // Hide the toast after 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 3000);
+      </script>
+    {% endif %}
+    
+{% block content %}
+          <!-- Modal sold items -->
+        <div class="modal fade" id="sold_items" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: black;color: white;">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Sold Items</h1>
+                <div data-bs-theme="dark"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+              </div>
+              <div class="modal-body" style="background: black; ">
+                <div class="row">
+                  <div class="col">
+                    <div class="card" style="background-color: black;" >
+                      
+                      {% for item in sold_items %}
+                        <div class="card" style="margin: 10px; text-align: left;" data-bs-toggle="collapse" href="#collapseExample{{ item.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                          <div class="card-body">
+                            <div class="container">
+                              
+                              <div class="row">
+                                <div class="col-6">
+                                   <h5>{{ item.item_name }}</h4> 
+                                </div>
+                                <div class="col-auto">
+                                  <b>Order Date :</b>{{ item.order_date }}
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="collapse" id="collapseExample{{ item.id }}" style="margin: 10px; text-align: left;">
+                          <div class="card shadow">
+                          <div class="card-body">
+                            <p><b>Customer</b>  {{ item.customer.name }}, <b>Contact</b> {{ item.customer.phone }}<br>
+                              <b>Address</b> {{ item.customer.address }}<br>
+                              <b>Quantity</b>  {{ item.quantity }}{% if item.unit == '0' %}Product{% endif %}
+                                                                  {% if item.unit == '1' %}kg{% endif %}
+                                                                  {% if item.unit == '2' %}litre{% endif %}
+                                                                  {% if item.unit == '3' %}m{% endif %}<br>
+                            <b>Received </b> <span style=" color: green;font-weight: 600;">INR {{ item.price }}</span>  </p>
+                          </div>
+                          
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div class="card" style="align-items: center;margin-right: 100px;background: unset;">
+                      
+                      <img src="static\images\wepik-export-20230726175114OG20.png" style="width: 400px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+{% if message %}
+            <div class="toast align-items-center text-bg-primary border-0 position-fixed show" style="  margin-right: 0%;margin-bottom: 20px; background-color: #010c15; z-index: 6;" role="alert" id="myToast" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex" >
+                  <div class="toast-body" >{{ message }}</h8>
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+              </div>
+              <script>
+                // Get the toast element
+                var toast = document.getElementById('myToast');
+              
+                // Hide the toast after 3 seconds (3000 milliseconds)
+                setTimeout(function() {
+                  toast.classList.remove('show');
+                }, 4000);
+              </script>
+              
+        {% endif %}
+{% if manager %}
+ <!--Modal for profile details-->
+        
+ <div class="modal fade" id="profile_details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="0" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="z-index:4;">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">My Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-4"><img src="https://png.pngtree.com/png-clipart/20220904/ourmid/pngtree-human-profile-avatar-ui-button-3d-icon-render-png-image_6137257.png" style="
+              height: 166px;">
+            </div>
+            <div class="col-8" style="text-align: left;padding-left: 50px;vertical-align: middle;"><p><b style="font-size: 30px;">{{ manager.name }}</b><br>
+              <div>
+                <span class="material-symbols-outlined">
+                alternate_email
+                </span> {{ manager.username }}<br>
+                <span class="material-symbols-outlined">
+                  storefront
+                  </span> {{ manager.store_name }}<br>
+                <span class="material-symbols-outlined">
+                call
+                </span> {{ manager.phone }} <br>
+                <span class="material-symbols-outlined">
+                  mail
+                </span> {{ manager.email }} <br>
+                <span class="material-symbols-outlined">
+                    home
+                </span> {{ manager.address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Products">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Summary">Summary</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="Products">
+        {% for i in item_categories %}
+        <div class="container" style="background-color: #ffffff00;padding: inherit; padding-bottom: 0px; border-radius: 8px;margin: 10px;">
+          <div clas="container" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-content: stretch; justify-content: center; align-items: center; padding: 0px 10px 0px 10px;">
+              <h3 style="margin-right: auto; margin-bottom: 20px; text-align: left;">{{ i.name }} </h3>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_category{{ i.id }}">Edit</a></li>
+                    <li><a class="dropdown-item" href="/delete_category/{{ i.name }}">Delete</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#add_new_item{{ i.id }}">Add an item</a></li>
+                  </ul>
+                </div>
+            </div>
+            <div class="container" style=" display: flex; overflow-x: auto; padding: inherit; padding-bottom: 2%; padding-top: 0px;">
+              <div class="card-wrapper" style="display: flex; z-index: 0;">
+                {% if i.items != [] %}
+                  {% for j in i.items %}
+                    <div class="card shadow-sm" style="width: 10rem; margin-right: 10px; z-index: -1;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ j.name }}</h5>
+                        <p class="card-text"><b>Price:</b> {{ j.price }} {% if j.unit == '0' %}Rs/unit{% endif %}
+                                                                        {% if j.unit == '1' %}Rs/kg{% endif %}
+                                                                        {% if j.unit == '2' %}Rs/litre{% endif %}
+                                                                        {% if j.unit == '3' %}Rs/m{% endif %}<br>
+                                                                        <b>Quantity:</b> {{ j.quantity }} {% if j.unit == '0' %}Product{% endif %}
+                                                                                                          {% if j.unit == '1' %}kg{% endif %}
+                                                                                                          {% if j.unit == '2' %}litre{% endif %}
+                                                                                                          {% if j.unit == '3' %}m{% endif %}<br></p>
+                        {% if j.quantity == 0 %}<span class="badge rounded-pill text-bg-danger">Out of Stock</span>{% endif %}
+                        {% if j.quantity != 0 %}<span class="badge rounded-pill text-bg-success">In stock</span>{% endif %}
+                        
+                      </div>
+                      <div class="card-footer">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_item{{ j.id }}" style="font-size: small;">Edit</a>
+                        <a href="/delete_item/{{ j.id }}" class="btn btn-primary" style="font-size: small;">Delete</a>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                <div class="card" style="width: 18rem; margin-right: 10px; z-index: -1;">
+                  <div class="card-body">
+                    <p class="card-text">No item in this category! Try to add some</p>
+                  </div>
+                </div>
+                
+                {% endif %}
+
+              </div>
+            </div>
+        </div>
+        
+
+        {% for j in i.items %}
+        <!-- Modal to edit item  -->
+        <div class="modal fade " id="edit_item{{ j.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="0" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="z-index: 1050;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            
+              <form method="POST" action="/edit_item/{{ j.id }}">
+                <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Item Name</span>
+                    <input type="text" id="item_name" name="item_name" value="{{ j.name }}"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="row g-2">
+                      <div class="col-md">
+                        <div class="form-floating">
+                          <input type="number" class="form-control" id="floatingInputGrid" name="price" value="{{ j.price }}" placeholder="name@example.com" required>
+                          <label for="floatingInputGrid">Price</label>
+                        </div>
+                      </div>
+                      <div class="col-md">
+                        <div class="form-floating">
+                          <select class="form-select" id="floatingSelectGrid" name="unit">
+                            <option value="0" {% if j.unit == '0' %}selected{% endif %} >Rs/product</option>
+                            <option value="1" {% if j.unit == '1' %}selected{% endif %}>Rs/kg</option>
+                            <option value="2" {% if j.unit == '2' %}selected{% endif %}>Rs/litre</option>
+                            <option value="3" {% if j.unit == '3' %}selected{% endif %}>Rs/m</option>
+                          </select>
+                          <label for="floatingSelectGrid">Unit</label>
+                        </div>
+                      </div>
+                    </div>
+                    <!--span class="input-group-text" id="inputGroup-sizing-default">Unit</span>
+                    <input type="text" id="unit" name="unit" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required-->
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Manufacture Date</span>
+                    <input type="date" id="manufacture_date" name="manufacture_date" value="{{ j.manufacture_date }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Quantity</span>
+                    <input type="number" id="quantity" name="quantity" value="{{ j.quantity }}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        
+        <!--Modal to add new item -->
+        <div class="modal fade " id="add_new_item{{ i.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            
+              <form method="POST" action="/add_item/{{ i.id }}">
+                <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Item Name</span>
+                    <input type="text" id="item_name" name="item_name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="row g-2">
+                      <div class="col-md">
+                        <div class="form-floating">
+                          <input type="number" class="form-control" id="floatingInputGrid" name="price" placeholder="name@example.com" min="1" required>
+                          <label for="floatingInputGrid">Price</label>
+                        </div>
+                      </div>
+                      <div class="col-md">
+                        <div class="form-floating">
+                          <select class="form-select" id="floatingSelectGrid" name="unit">
+                            <option value="0">Rs/product</option>
+                            <option value="1">Rs/kg</option>
+                            <option value="2">Rs/litre</option>
+                            <option value="3">Rs/m</option>
+                          </select>
+                          <label for="floatingSelectGrid">Unit</label>
+                        </div>
+                      </div>
+                    </div>
+                    <!--span class="input-group-text" id="inputGroup-sizing-default">Unit</span>
+                    <input type="text" id="unit" name="unit" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required-->
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Manufacture Date</span>
+                    <input type="date" id="manufacture_date" name="manufacture_date" class="form-control" placeholder="DD/MM/YY" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Quantity</span>
+                    <input type="number" id="quantity" name="quantity" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for i in item_categories %}
+        <!-- Modal to edit category  -->
+        <div class="modal fade " id="edit_category{{ i.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="0" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="z-index: 1050;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            
+              <form method="POST" action="/edit_category/{{ i.id }}">
+                <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Category Name</span>
+                    <input type="text" id="category_name" name="category_name" value="{{ i.name }}"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                  </div>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+          
+
+          <!-- Button trigger modal -->
+          <button type="button" class="floating-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            
+            <p style="padding: 0px; margin: 10px;">Add Category</p>
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Category</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+              
+                <form method="POST" action="/save_new_category">
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="inputGroup-sizing-default">New Category</span>
+                      <input type="text" id="new_category" name="new_category" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="tab-pane fade" id="Summary">
+        <div class="grid">
+          <div class="g-col-6" style="text-align: left;">
+            <img src="data:image/png;base64,{{ bar_graph }}" alt="Bar Graph">
+            <ul>
+                {% for category, value in data %}
+                    <li>{{ category }}: {{ value }}</li>
+                {% endfor %}
+            </ul>
+          </div>
+          <div class="g-col-6" style="text-align: left;">
+            <img src="data:image/png;base64,{{ graph_url }}" alt="Line Graph">
+            <ul>
+              {% for items, quantity in data2 %}
+                  <li>{{ items }}: {{ quantity }}</li>
+              {% endfor %}
+          </ul>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+    {% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% endblock %}

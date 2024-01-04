@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{{ url_for('static', filename='images/Untitled-design.ico') }}" type="image/x-icon">
+  <title>{% block title %}EasyGrocery{% endblock %}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      text-align: center;
+      background-color: #ffffff;
+    }
+
+    h1.display-5.fw-bold {
+      color: purple;
+    }
+
+    .bg-light {
+      background-color: #dda1ff;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .b-example-divider {
+      height: 3rem;
+      background-color: rgba(0, 0, 0, .1);
+      border: solid rgba(0, 0, 0, .15);
+      border-width: 1px 0;
+      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 100vh;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      fill: currentColor;
+    }
+
+    .nav-scroller {
+      position: relative;
+      z-index: 2;
+      height: 2.75rem;
+      overflow-y: hidden;
+    }
+
+    .nav-scroller .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      padding-bottom: 1rem;
+      margin-top: -1px;
+      overflow-x: auto;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mb-4 {
+      margin-bottom: 10px;
+    }
+
+    .pb-3 {
+      padding-bottom: 0px;
+    }
+
+    .p-0 {
+      padding: 0rem!important;
+      border-bottom: 2px solid darkgray;
+      background-color: white;
+    }
+
+    .main-content {
+      padding-top: 20px;
+    }
+
+    .header-img {
+      padding-top: 5px;
+      margin-top: 10px;
+    }
+
+    .fs-4 {
+      padding-bottom: 5px;
+    }
+
+    .form-control-dark {
+      background-color: #d3d3d34f;
+      border: 1px solid #dbdbdb;
+    }
+
+    .footer {
+      margin-top: 50px;
+    }
+    label {
+      display: inline-block;
+      padding: 10px;
+      font-weight: bold;
+    }
+    .nav-link {
+    color: #dee2e6;
+    }
+    .floating-button {
+      position: fixed;
+      bottom: 25px;
+      right: 40px;
+      border-radius: 8px;
+      width: 10%;
+      height: 50px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+  .floating-button i {
+    line-height: 0;
+  }
+  
+  </style>
+</head>
+<body>
+  {% block header %}
+  <div style="position: fixed; width: 100%; z-index: 1;">
+    <header class="p-0">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <!--src="https://drive.google.com/uc?export=view&id=1mpgyQLd4R9Zwgi5HV-KIEc6kUVFXvQXw"-->
+          <a href="/" style="text-decoration: none;"><img class="mb-2" src="https://cdn3d.iconscout.com/3d/premium/thumb/grocery-bag-4065245-3361784.png" alt="" width="68" height="65" style="margin-top: 8px;padding-bottom: 10px;">
+            <span class="fs-4" style="color:rgb(112, 0, 131);padding-bottom:0px;"><b>EasyGrocery</b> |<span> </span></span></a>
+
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2 text-black">Home</a></li>
+            <li><a href="/about" class="nav-link px-2 text-black">About</a></li>
+          </ul>
+
+          
+
+          <div class="text-end">
+            <a href="/login"><button type="button" class="btn btn-outline-light me-2"
+                style="color: black; background-color: #ffd555;">Login</button></a>
+            <a href="/register"><button type="button" class="btn btn-warning">Sign Up</button></a>
+          </div>
+          
+        </div>
+      </div>
+    </header>
+  </div>
+  {% endblock %}
+  {% block toast %}
+  {% endblock %}  
+    <main class="main-content">
+    <div class="container py-4" style="margin-top: 80px;">
+      {% if request.args.get('message') %}
+      <div class="toast align-items-center text-bg-primary border-0 position-fixed show" style="margin-right: 0%;margin-bottom: 20px; background-color: #010c15; z-index: 6;" role="alert" id="myToast" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" >
+            {{ request.args.get('message') }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <script>
+        // Get the toast element
+        var toast = document.getElementById('myToast');
+      
+        // Hide the toast after 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 3000);
+      </script>
+    {% endif %}
+      {% block content %}
+      <div class="container p-5 mb-4 rounded-3" style="background-color: #fff180;">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="container-fluid py-5" style="text-align: left;">
+              
+
+              <h1 class="display-5 fw-bold">EasyGrocery</h1>
+              <p class="col-md-15 fs-4">Welcome to EasyGrocery!<br>My <b>Modern Application Development - I</b>  Project, a web app designed to revolutionize your grocery shopping experience. With EasyGrocery, you can explore a vast selection of products, create personalized shopping cart, and enjoy convenient delivery options. Say goodbye to long queues and hello to effortless grocery shopping. Join EasyGrocery today and discover the future of grocery shopping!</p>
+              <a href="/about"><button class="btn btn-outline-warning">Know more</button></a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="container-fluid py-5" style="padding: 80px;" >
+              <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" style="filter: saturate(180%);">
+                    <img src="https://static.vecteezy.com/system/resources/previews/021/360/259/original/shopping-bag-grocery-3d-illustration-png.png" class="d-block w-100" alt="...">
+
+                  </div>
+                  <div class="carousel-item" style="filter: saturate(180%);">
+                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/grocery-bag-8322484-6648660.png" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item" style="filter: saturate(180%);">
+                    <img src="https://static.vecteezy.com/system/resources/previews/024/673/156/original/shop-basket-supermarket-grocery-bag-3d-icon-illustration-design-png.png" class="d-block w-100" alt="...">
+
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-md-stretch" style="text-align: left;">
+        <div class="col-md-6">
+          <div class="h-100 p-5 text-bg-dark rounded-3">
+            <h2>Already have a Profile?</h2>
+            <p>Easily log in to access a world of grocery items and delightful deals.</p>
+            <a href="/login"><button class="btn btn-outline-light" action="/login" type="button">Login</button></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 p-5 border rounded-3" style="background-color: #c4c4c4;">
+            <h2>Don't have an account yet?</h2>
+            <p>Sign up now to unlock a seamless grocery shopping experience</p>
+            <a href="/register"><button class="btn btn-outline-secondary" type="button">Sign Up</button></a>
+          </div>
+        </div>
+      </div> 
+    {% endblock %}
+    </div>
+  </main>
+  <!--footer class="pt-3 mt-4 text-black">
+    © 2023 | Shankjbs571
+  </footer-->
+  <div class="container">
+    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 border-top">
+      <div class="col mb-3">
+        
+      </div>
+  
+      <div class="col mb-3">
+  
+      </div>
+  
+      <div class="col mb-3">
+        <a href="/" class=" align-items-center link-dark text-decoration-none">
+          <img class="mb-2" src="https://cdn3d.iconscout.com/3d/premium/thumb/grocery-bag-4065245-3361784.png" alt="" width="68" height="65" >
+        </a>
+        <h5>| @22f1000698 | EasyGrocery</h5>
+        <p class="text-muted">© 2023</p>
+        
+      </div>
+  
+      <div class="col mb-3">
+      </div>
+  
+      <div class="col mb-3">
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>

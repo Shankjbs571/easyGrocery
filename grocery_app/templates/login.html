@@ -1,0 +1,82 @@
+{% extends "home.html" %}
+
+{% block title %}Login-EasyGrocery{% endblock %}
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+{% block content %}
+{% if request.args.get('message') %}
+      <div class="toast align-items-center text-bg-primary border-0 position-fixed show" style="margin-right: 0%;margin-bottom: 20px; background-color: #010c15;" role="alert" id="myToast" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" >
+            {{ request.args.get('message') }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <script>
+        // Get the toast element
+        var toast = document.getElementById('myToast');
+      
+        // Hide the toast after 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 3000);
+      </script>
+    {% endif %}
+
+  <div class="container" style="width: 40%;text-align: left;padding: 55px;border-radius: 8px;background-color: #ffd555;">
+    
+    <h2 style="padding-bottom: 30px;">Login</h2>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#customer">Customer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#manager">Store Manager</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="customer">
+        <form method="POST" action="/login">
+          <div class="form-group" style="display: none;">
+            <input type="text" class="form-control" id="role" name="role" value="customer">
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username"  required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Log in as Customer</button>
+        </form>
+      </div>
+      <div class="tab-pane fade" id="manager">
+        <form method="POST" action="/login">
+            <div class="form-group" style="display: none;">
+                <input type="text" class="form-control" id="role" name="role" value="manager">
+            </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          
+    
+          <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Log in as Store Manager</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+{% endblock %}

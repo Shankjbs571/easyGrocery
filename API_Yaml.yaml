@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  title: EasyGrocery Web App API
+  version: 1.0.0
+paths:
+  /api/item:
+    get:
+      summary: Get all items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+    post:
+      summary: Add a new item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewItem'
+      responses:
+        '201':
+          description: Successful response for created NewItem
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+  /api/item/{item_id}:
+    get:
+      summary: Get an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the item to retrieve
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+    put:
+      summary: Update an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the item to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedItem'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+    delete:
+      summary: Delete an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the item to delete
+      responses:
+        '204':
+          description: Successful response
+
+  /api/itemcategory:
+    get:
+      summary: Get all item categories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemCategory'
+    post:
+      summary: Add a new item category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewItemCategory'
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemCategory'
+  /api/itemcategory/{category_id}:
+    get:
+      summary: Get an item category by ID
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to retrieve
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemCategory'
+    put:
+      summary: Update an item category by ID
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedItemCategory'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemCategory'
+        
+    delete:
+      summary: Delete an item category by ID
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to delete
+      responses:
+        '204':
+          description: Successful response
+
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+        unit:
+          type: string
+        seller:
+          type: string
+        manufacture_date:
+          type: string
+        quantity:
+          type: integer
+        category_id:
+          type: integer
+
+    NewItem:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        unit:
+          type: string
+        seller:
+          type: string
+        manufacture_date:
+          type: string
+        quantity:
+          type: integer
+        category_id:
+          type: integer
+
+    UpdatedItem:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        unit:
+          type: string
+        seller:
+          type: string
+        manufacture_date:
+          type: string
+        quantity:
+          type: integer
+        category_id:
+          type: integer
+
+    ItemCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        manager_id:
+          type: integer
+
+    NewItemCategory:
+      type: object
+      properties:
+        name:
+          type: string
+        manager_id:
+          type: integer
+
+    UpdatedItemCategory:
+      type: object
+      properties:
+        name:
+          type: string
+        manager_id:
+          type: integer
